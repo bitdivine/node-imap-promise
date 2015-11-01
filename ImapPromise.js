@@ -12,9 +12,9 @@ function ImapPromises(account_details){Imap.call(this,account_details);}
 ImapPromises.prototype.connectAsync = connectAsync;
 ImapPromises.prototype.openBoxAsync = openBoxAsync;
 ImapPromises.prototype.getMailAsync = getMailAsync;
-ImapPromises.prototype.collectEmail = collectEmail;
+ImapPromises.prototype.collectEmailAsync = collectEmailAsync;
 ImapPromises.prototype.findAttachments = findAttachments;
-ImapPromises.prototype.downloadAttachment = downloadAttachment;
+ImapPromises.prototype.downloadAttachmentAsync = downloadAttachmentAsync;
 
 ////////// Connect && open mailbox: //////////////////
 function connectAsync(){
@@ -31,7 +31,7 @@ function openBoxAsync(name,readOnly){
 	});
 }
 ///////// Assemble message from a thousand tiny shards: ///////////////////
-function getMailAsync(request,process){return collect_events(request,"message","error","end",process||collectEmail);}
+function getMailAsync(request,process){return collect_events(request,"message","error","end",process||collectEmailAsync);}
 function collect_events(thing,good,bad,end,munch){ // Collect a sequence of events, munching them as you go if you wish.
 	return new Promise(function(yay,nay){
 		var ans = [];
@@ -40,7 +40,7 @@ function collect_events(thing,good,bad,end,munch){ // Collect a sequence of even
 		thing.on(end, function(){Promise.all(ans).then(yay);});
 	});
 }
-function collectEmail(msg,seq){
+function collectEmailAsync(msg,seq){
 	return Promise.props(
 	{ seq:	// Message sequence number:
 		seq
@@ -73,7 +73,7 @@ function findAttachmentParts(struct, attachments) { // https://github.com/mscdex
   }
   return attachments;
 }
-function downloadAttachment(email_uid,attachment,filename){
+function downloadAttachmentAsync(email_uid,attachment,filename){
 	imap = this;
 	filename = filename || attachment.params.name;
 	var encoding = attachment.encoding;

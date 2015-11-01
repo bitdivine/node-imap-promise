@@ -16,14 +16,14 @@ imap.connectAsync()
 		struct: true
 	}), function(message){
 		// For each e-mail:
-		return (imap.collectEmail(message)
+		return (imap.collectEmailAsync(message)
 			.then(function(msg){
 				// Panda also wants to download any pictures of bamboo shoots attached to those e-mails:
 				msg.attachments = imap.findAttachments(msg);
 				msg.downloads = Promise.all(msg.attachments.map(function(attachment){
 					var email_id = msg.attributes.uid;
 					var save_as_filename = attachment.params.name;
-					return imap.downloadAttachment(email_id, attachment, save_as_filename);
+					return imap.downloadAttachmentAsync(email_id, attachment, save_as_filename);
 				}));
 				return Promise.props(msg);
 			})
