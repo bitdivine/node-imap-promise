@@ -1,7 +1,7 @@
 imap-promise
 ============
 
-This is (node-imap)[https://github.com/mscdex/node-imap] with a promise API.  There is a (demo)[demo.js].
+This is a node IMAP client that uses promises.  It is based on [node-imap](https://github.com/mscdex/node-imap) but the resulting code is shorter and easier to understand.
 
 
 ## Installation:
