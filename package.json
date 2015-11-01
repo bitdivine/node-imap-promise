@@ -1,0 +1,17 @@
+{
+  "name": "node-imap-leke",
+  "version": "1.0.0",
+  "main": "ImapPromise.js",
+  "scripts": {
+    "test": "jshint *js"
+  },
+  "author": "Max Murphy",
+  "license": "BSD",
+  "dependencies": {
+    "base64": "^2.1.0",
+    "base64-stream": "^0.1.3",
+    "events": "^1.1.0",
+    "imap": "^0.8.16"
+  },
+  "devDependencies": {}
+}
