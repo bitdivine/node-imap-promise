@@ -1,15 +1,8 @@
 var IPromise = require('./ImapPromise')
   , Promise  = require('bluebird');
 
-// Panda looks after his details:
-var myMostPrivateDetails = {
-  user: 'max@pink.panda',
-  password: process.argv[2] || (function(){throw new Error("Need a password, dude!");})(),
-  host: 'mail.pink.panda',
-  port: 992,
-  tls: true,
-  starttls: false
-};
+// Panda looks after his password:
+var myMostPrivateDetails = require('./private/credentials');
 
 var imap = new IPromise(myMostPrivateDetails);
 imap.connectAsync()
@@ -22,11 +15,16 @@ imap.connectAsync()
 		bodies: 'HEADER.FIELDS (FROM TO SUBJECT DATE)',
 		struct: true
 	}), function(message){
+		// For each e-mail:
 		return (imap.collectEmail(message)
 			.then(function(msg){
 				// Panda also wants to download any pictures of bamboo shoots attached to those e-mails:
 				msg.attachments = imap.findAttachments(msg);
-				msg.downloads = Promise.all(msg.attachments.map(imap.downloadAttachment.bind(null,imap,msg.attributes.uid)));
+				msg.downloads = Promise.all(msg.attachments.map(function(attachment){
+					var email_id = msg.attributes.uid;
+					var save_as_filename = attachment.params.name;
+					return imap.downloadAttachment(email_id, attachment, save_as_filename);
+				}));
 				return Promise.props(msg);
 			})
 		);

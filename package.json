@@ -1,6 +1,6 @@
 {
   "name": "node-imap-promise",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "ImapPromise.js",
   "scripts": {
     "test": "jshint *js"

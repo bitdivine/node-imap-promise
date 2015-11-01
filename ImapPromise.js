@@ -73,7 +73,8 @@ function findAttachmentParts(struct, attachments) { // https://github.com/mscdex
   }
   return attachments;
 }
-function downloadAttachment(imap,email_uid,attachment,filename){
+function downloadAttachment(email_uid,attachment,filename){
+	imap = this;
 	filename = filename || attachment.params.name;
 	var encoding = attachment.encoding;
 	var request = imap.fetch(email_uid , {
